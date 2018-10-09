@@ -9,7 +9,7 @@
 								<a href="#"><i class="fa fa-linkedin"></i></a> <!-- data-target="#loginModal" -->
 						</div>
 						<div class="top-nav-login-btn pull-right"> 
-							<a href="{{ url('/home') }}" data-toggle="modal" ><i class="fa fa-sign-in"></i>LOGIN</a>
+							<a href="{{ url('/login') }}" data-toggle="modal" ><i class="fa fa-sign-in"></i>LOGIN</a>
 						</div>
 						<!--<div class="top-navbar-search pull-right">
 							<i class="fa fa-search"></i>
@@ -53,11 +53,11 @@
                             </li>
 							<li class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-dashboard"></i>DASHBOARD <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="dashboard/admin-dashboard.html"><i class="fa fa-user-secret"></i>ADMIN</a></li>
-									<li><a href="dashboard/teacher-dashboard.html"><i class="fa fa-user"></i>TEACHER</a></li>
-                                    <li><a href="dashboard/student-dashboard.html"><i class="fa fa-child"></i>STUDENT</a></li>
-                                </ul>
+    <ul class="dropdown-menu">
+        <li><a  href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-user-secret"></i>ADMIN</a></li>
+		<li><a  href="#" data-toggle="modal" data-target="#loginModalTeacher"><i class="fa fa-user"></i>TEACHER</a></li>
+        <li><a  href="#" data-toggle="modal" data-target="#loginModalStudent"><i class="fa fa-child"></i>STUDENT</a></li>
+    </ul>
                             </li>
 							<li class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-file"></i>PAGES <b class="caret"></b></a>

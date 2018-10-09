@@ -24,7 +24,7 @@ class CreateTeachersTable extends Migration
             $table->string('phone');
             $table->string('email',150)->unique();
             $table->string('religion');
-            $table->string('passeord');
+            $table->string('password');
             $table->string('avator');            
             $table->string('status')->defalt('0');      
             $table->softDeletes();

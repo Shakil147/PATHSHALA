@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Teacher;
 use App\TeacherContact;
 use App\TeacherAcademic;
@@ -10,6 +11,7 @@ use App\Mail\ConfermEmail;
 use Mail;
 use Image;
 use DB;
+use Session;
 
 class TeacherController extends Controller
 {
@@ -21,6 +23,46 @@ class TeacherController extends Controller
     public function index()
     {
         return view('dashboard.teacher.home.teacherDashboard');
+    }
+
+    public function login(Request $request)
+    {
+        $teacher = Teacher::where('email', $request->email)->first();
+        if(isset($teacher)) {
+            $cheak = password_verify($request->password, $teacher->password);
+            if($cheak) {
+                $teacherName = $teacher->first_name.' '.$teacher->last_name;
+                $token_key = Str::random(32);
+                $teacher->token_key = $token_key;
+                $teacher->save();
+                
+                Session::put('teacherId', $teacher->id);
+                Session::put('teacherName',  $teacherName);
+                Session::put('teacherPhoto',  $teacher->avator);
+                Session::put('token_key',  $token_key);
+
+                notify()->flash('Welcome back!'.$teacherName, 'success', [
+                    'timer' => 5000,
+                    'text' => 'It\'s really great to see you again',
+                ]);
+
+                return redirect('/teacher-home');
+            } else {
+
+               notify()->flash('Email or Passeord is incorrect', 'warning', [
+                    'timer' => 3000,
+                    'text' => 'It\'s really great to see you again',
+                ]);
+               return back();
+            }
+        } 
+        else { 
+            notify()->flash('Email or Passeord is incorrect', 'warning', [
+                    'timer' => 3000,
+                    'text' => 'It\'s really great to see you again',
+                ]);
+            return back();
+        }
     }
 
     /**
@@ -106,7 +148,7 @@ class TeacherController extends Controller
         $newTeacher->dob          =  $request->birth_date;
         $newTeacher->phone        =  $request->phone;
         $newTeacher->email        =  $request->email;
-        $newTeacher->passeord     =   bcrypt('secret');
+        $newTeacher->password     =   bcrypt('secret');
         $newTeacher->religion     =  $request->religion;
         $newTeacher->avator       =   $imageUrl;
         $newTeacher->status       =   0;
@@ -270,5 +312,28 @@ class TeacherController extends Controller
     public function marksReport()
     {
         return view('dashboard.teacher/report/marks-report');
+    }
+    public function logout(Request $request)
+    {
+        $teacherId = Session::get('teacherId');
+        $teacher = Teacher::where('id',$teacherId)->first();
+        $teacher->token_key= '';
+        $teacher->save();
+        Session::forget('teacherId');
+        Session::forget('teacherName');
+        Session::forget('teacherPhoto');
+        Session::forget('token_key');
+        return redirect('/');
+    }
+    public function s()
+    {
+        $teacherId = Session::get('teacherId');
+        $token_key = Session::get('token_key');
+        $teacher = Teacher::find($teacherId)->first();
+       // return $teacher->token_key;
+        return $teacherId;
+        if ($token_key == $teacher->token_key) {
+            return $teacher;
+        }
     }
 }

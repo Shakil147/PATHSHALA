@@ -24,7 +24,7 @@ class CreateStudentsTable extends Migration
             $table->string('phone',15)->unique();
             $table->string('email',150)->unique();
             $table->string('religion');
-            $table->string('passeord');
+            $table->string('password');
             $table->string('avator');
             $table->integer('registration');
             $table->integer('label_id')->unsigned();

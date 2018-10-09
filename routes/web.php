@@ -36,9 +36,9 @@ Route::get('/subjects', 'PathshalaController@getSubjects');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/announcement', 'AdminController@announcement');
 
-Route::get('/class', 'LabelController@index');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/class', 'LabelController@index');
 Route::post('/add-class', 'LabelController@create')->name('class.add');
 Route::post('/update-class', 'LabelController@update')->name('class.update');
 
@@ -55,6 +55,7 @@ Route::post('/add-paper', 'PaperController@store')->name('paper.add');
 Route::post('/update-paper', 'PaperController@update')->name('paper.update');
 
 Route::get('/message', 'AdminController@message');
+Route::get('/announcement', 'AdminController@announcement');
 Route::get('/teacher-attendence-report', 'AdminController@teacherAttendence');
 Route::get('/teacher-marks-report', 'AdminController@teacherMearkRreport');
 
@@ -67,32 +68,47 @@ Route::post('/save-teacher', 'TeacherController@store')->name('teacher.add');
 Route::get('/teacher-list', 'TeacherController@teacherList');
 Route::get('/create-timetable', 'AdminController@createTimetable');
 Route::get('/class-timetable', 'AdminController@classTimetable');
+});
 
 
 
-Route::get('/teacher-home', 'TeacherController@index');
-Route::get('/create-assignment', 'TeacherController@createAssignment');
-Route::get('/assignment-download', 'TeacherController@downlodAssignment');
-Route::get('/mark-student-attendence', 'TeacherController@markAttendence');
-Route::get('/view-student-attendence', 'TeacherController@viewAttendence');
-Route::get('/t-timetable', 'TeacherController@timetable');
-Route::get('/teacher-message', 'TeacherController@message');
-Route::get('/add-marks', 'TeacherController@addMarks');
-Route::get('/view-student-marks', 'TeacherController@viewMarks');
-Route::get('/attendence-report', 'TeacherController@attendenceReport');
-Route::get('/t-marks-report', 'TeacherController@marksReport');
+
+Route::group(['middleware' => ['CheckTeacher']], function () {
+    
+	Route::get('/teacher-home', 'TeacherController@index');
+	Route::get('/create-assignment', 'TeacherController@createAssignment');
+	Route::get('/assignment-download', 'TeacherController@downlodAssignment');
+	Route::get('/mark-student-attendence', 'TeacherController@markAttendence');
+	Route::get('/view-student-attendence', 'TeacherController@viewAttendence');
+	Route::get('/t-timetable', 'TeacherController@timetable');
+	Route::get('/teacher-message', 'TeacherController@message');
+	Route::get('/add-marks', 'TeacherController@addMarks');
+	Route::get('/view-student-marks', 'TeacherController@viewMarks');
+	Route::get('/attendence-report', 'TeacherController@attendenceReport');
+	Route::get('/t-marks-report', 'TeacherController@marksReport');
+});
+
+Route::post('/teacher-login', 'TeacherController@login')->name('teacher.login');
+Route::post('/teacherLogout', 'TeacherController@logout')->name('teacherLogout');
 
 
-Route::get('/student-home', 'StudentController@home');
-Route::get('/assignment-download', 'StudentController@assignmentDownload');
-Route::get('/assignment-upload', 'StudentController@assignmentUpload');
-Route::get('/student-attendence', 'StudentController@studentAttendence');
-Route::get('/attendence-detailed', 'StudentController@attendenceDetailed');
-Route::get('/view-student-attendence', 'StudentController@viewAttendence');
-Route::get('/student-message', 'StudentController@message');
-Route::get('/student-marks', 'StudentController@studentMarks');
-Route::get('/view-student-marks', 'StudentController@viewMarks');
-Route::get('/student-timetable', 'StudentController@timetable');
-Route::get('/student-exam-plan', 'StudentController@examPlan');
-Route::get('/student-exam-schedule', 'StudentController@examSchedule');
-Route::get('/student-fees', 'StudentController@fees');
+Route::post('/student-login', 'StudentController@login')->name('student.login');
+Route::post('/studentLogout', 'StudentController@logout')->name('studentLogout');
+Route::group(['middleware' => ['CheckStusent']], function () {
+    
+	Route::get('/student-home', 'StudentController@home');
+	Route::get('/assignment-download', 'StudentController@assignmentDownload');
+	Route::get('/assignment-upload', 'StudentController@assignmentUpload');
+	Route::get('/student-attendence', 'StudentController@studentAttendence');
+	Route::get('/attendence-detailed', 'StudentController@attendenceDetailed');
+	Route::get('/view-student-attendence', 'StudentController@viewAttendence');
+	Route::get('/student-message', 'StudentController@message');
+	Route::get('/student-marks', 'StudentController@studentMarks');
+	Route::get('/view-student-marks', 'StudentController@viewMarks');
+	Route::get('/student-timetable', 'StudentController@timetable');
+	Route::get('/student-exam-plan', 'StudentController@examPlan');
+	Route::get('/student-exam-schedule', 'StudentController@examSchedule');
+	Route::get('/student-fees', 'StudentController@fees');
+
+});
+Route::get('/s', 'TeacherController@s');

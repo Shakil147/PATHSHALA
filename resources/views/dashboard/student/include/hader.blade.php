@@ -112,7 +112,7 @@
 					</li>
 					<li class="user dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<span><img src="{{ asset('scource')}}/dashboard/assets/img/parent/parent2.jpg" alt="user">JOHN DOE<span class="caret"></span></span>
+							<span><img src="{{ asset(Session::get('studentPhoto'))}}" alt="user">{{ Session::get('studentName') }}<span class="caret"></span></span>
 						</a>
 						<ul class="dropdown-menu notification-list">
 							<li>
@@ -129,7 +129,15 @@
 							</li>
 							<li>
 								<div class="all-notifications">
-									<a href="#">LOGOUT</a>
+									<a class="dropdown-item" href="{{ route('studentLogout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('studentLogout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                    <form id="studentLogout-form" action="{{ route('studentLogout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
 								</div>
 							</li>
 						</ul>

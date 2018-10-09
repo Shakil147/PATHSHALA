@@ -6,8 +6,10 @@ use App\Student;
 use App\StudentGuardian;
 use App\StudentContact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Image;
 use DB;
+use Session;
 
 class StudentController extends Controller
 {
@@ -250,5 +252,55 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         //
+    }
+    public function login(Request $request)
+    {
+        $student = Student::where('email', $request->email)->first();
+        if(isset($student)) {
+            $cheak = password_verify($request->password, $student->password);
+            if($cheak) {
+                $studentName = $student->first_name.' '.$student->last_name;
+                $token_key = Str::random(32);
+                $student->token_key = $token_key;
+                $student->save();
+                
+                Session::put('studentId', $student->id);
+                Session::put('studentName',  $studentName);
+                Session::put('studentPhoto',  $student->avator);
+                Session::put('student_token_key',  $token_key);
+
+                notify()->flash('Welcome back!'.$studentName, 'success', [
+                    'timer' => 5000,
+                    'text' => 'It\'s really great to see you again',
+                ]);
+                return redirect('/student-home');
+            }
+        }else { 
+            notify()->flash('Email or Passeord is incorrect', 'warning', [
+                    'timer' => 3000,
+                    'text' => 'It\'s really great to see you again',
+                ]);
+            return back();
+        }
+        
+    }
+
+    public function logout(Request $request)
+    {
+        
+        $studentId = Session::get('studentId');
+        $student = Student::where('id',$studentId)->first();
+        $student->token_key= '';
+        $student->save();
+        Session::forget('studentId');
+        Session::forget('studentName');
+        Session::forget('studentPhoto');
+        Session::forget('student_token_key');
+        return redirect('/');
+    }
+
+    public function home()
+    {
+        return view('dashboard.student.home.student-dashboard');
     }
 }

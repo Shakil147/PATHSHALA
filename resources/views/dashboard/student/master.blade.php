@@ -53,8 +53,22 @@
 		<script src="{{ asset('scource')}}/dashboard/assets/plugins/jquery.dataTables.min.js"></script>
 		<script src="{{ asset('scource')}}/dashboard/assets/plugins/dataTables.responsive.min.js"></script>
         <script src="{{ asset('scource')}}/dashboard/assets/js/js.js"></script>
+        <script src="{{ asset('js')}}/sweetalert.min.js"></script>
         @yield('jsPlgin')
+        
+        @if (notify()->ready())
+		    <script>
+		        swal({
+		            title: "{!! notify()->message() !!}",
+		            text: "{!! notify()->option('text') !!}",
+		            type: "{{ notify()->type() }}",
+		            @if (notify()->option('timer'))
+		                timer: {{ notify()->option('timer') }},
+		                showConfirmButton: false
+		            @endif
+		        });
+		    </script>
+		@endif
 		
     </body>
-<script>'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'a2plcpnl0381'}) // Monitoring performance to make your website faster. If you want to opt-out, please contact web hosting support.</script><!-- <script src='../../../../../../img1.wsimg.com/tcc/tcc_l.combined.1.0.6.min.js'></script> -->
 </html>
