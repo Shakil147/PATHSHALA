@@ -94,6 +94,7 @@ Route::post('/teacherLogout', 'TeacherController@logout')->name('teacherLogout')
 
 Route::post('/student-login', 'StudentController@login')->name('student.login');
 Route::post('/studentLogout', 'StudentController@logout')->name('studentLogout');
+
 Route::group(['middleware' => ['CheckStusent']], function () {
     
 	Route::get('/student-home', 'StudentController@home');

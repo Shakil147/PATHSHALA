@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\CheckTeacher' => $baseDir . '/app/CheckTeacher.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AdminController' => $baseDir . '/app/Http/Controllers/AdminController.php',
@@ -26,6 +27,8 @@ return array(
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
     'App\\Http\\Middleware\\CheckForMaintenanceMode' => $baseDir . '/app/Http/Middleware/CheckForMaintenanceMode.php',
+    'App\\Http\\Middleware\\CheckStusent' => $baseDir . '/app/Http/Middleware/CheckStusent.php',
+    'App\\Http\\Middleware\\CheckTeacher' => $baseDir . '/app/Http/Middleware/CheckTeacher.php',
     'App\\Http\\Middleware\\EncryptCookies' => $baseDir . '/app/Http/Middleware/EncryptCookies.php',
     'App\\Http\\Middleware\\RedirectIfAuthenticated' => $baseDir . '/app/Http/Middleware/RedirectIfAuthenticated.php',
     'App\\Http\\Middleware\\TrimStrings' => $baseDir . '/app/Http/Middleware/TrimStrings.php',
@@ -43,9 +46,12 @@ return array(
     'App\\Student' => $baseDir . '/app/Student.php',
     'App\\StudentContact' => $baseDir . '/app/StudentContact.php',
     'App\\StudentGuardian' => $baseDir . '/app/StudentGuardian.php',
+    'App\\StudentLogInfo' => $baseDir . '/app/StudentLogInfo.php',
     'App\\Subject' => $baseDir . '/app/Subject.php',
     'App\\Teacher' => $baseDir . '/app/Teacher.php',
+    'App\\TeacherAcademic' => $baseDir . '/app/TeacherAcademic.php',
     'App\\TeacherContact' => $baseDir . '/app/TeacherContact.php',
+    'App\\TeacherLogInfo' => $baseDir . '/app/TeacherLogInfo.php',
     'App\\User' => $baseDir . '/app/User.php',
     'BeyondCode\\DumpServer\\DumpServerCommand' => $vendorDir . '/beyondcode/laravel-dump-server/src/DumpServerCommand.php',
     'BeyondCode\\DumpServer\\DumpServerServiceProvider' => $vendorDir . '/beyondcode/laravel-dump-server/src/DumpServerServiceProvider.php',

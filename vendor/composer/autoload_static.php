@@ -369,6 +369,7 @@ class ComposerStaticInit646343fa81365de17b0a818cb21ee418
     );
 
     public static $classMap = array (
+        'App\\CheckTeacher' => __DIR__ . '/../..' . '/app/CheckTeacher.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
@@ -389,6 +390,8 @@ class ComposerStaticInit646343fa81365de17b0a818cb21ee418
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',
+        'App\\Http\\Middleware\\CheckStusent' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckStusent.php',
+        'App\\Http\\Middleware\\CheckTeacher' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckTeacher.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
@@ -406,9 +409,12 @@ class ComposerStaticInit646343fa81365de17b0a818cb21ee418
         'App\\Student' => __DIR__ . '/../..' . '/app/Student.php',
         'App\\StudentContact' => __DIR__ . '/../..' . '/app/StudentContact.php',
         'App\\StudentGuardian' => __DIR__ . '/../..' . '/app/StudentGuardian.php',
+        'App\\StudentLogInfo' => __DIR__ . '/../..' . '/app/StudentLogInfo.php',
         'App\\Subject' => __DIR__ . '/../..' . '/app/Subject.php',
         'App\\Teacher' => __DIR__ . '/../..' . '/app/Teacher.php',
+        'App\\TeacherAcademic' => __DIR__ . '/../..' . '/app/TeacherAcademic.php',
         'App\\TeacherContact' => __DIR__ . '/../..' . '/app/TeacherContact.php',
+        'App\\TeacherLogInfo' => __DIR__ . '/../..' . '/app/TeacherLogInfo.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'BeyondCode\\DumpServer\\DumpServerCommand' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/DumpServerCommand.php',
         'BeyondCode\\DumpServer\\DumpServerServiceProvider' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/DumpServerServiceProvider.php',

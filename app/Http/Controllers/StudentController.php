@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Student;
 use App\StudentGuardian;
 use App\StudentContact;
+use App\StudentLogInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Image;
@@ -258,12 +259,26 @@ class StudentController extends Controller
         $student = Student::where('email', $request->email)->first();
         if(isset($student)) {
             $cheak = password_verify($request->password, $student->password);
+            $studentName = $student->first_name.' '.$student->last_name;
             if($cheak) {
-                $studentName = $student->first_name.' '.$student->last_name;
+
+                //$ip = StudentLogInfo::get_ip();
+                $ip = $_SERVER['REMOTE_ADDR'];
+                $os = StudentLogInfo::get_os();
+                $browser = StudentLogInfo::get_browser();
+                $device = StudentLogInfo::get_device();
+
+                $newTokenKey = new StudentLogInfo;
+                $newTokenKey->student_id = $student->id;
+                $newTokenKey->ip = $ip;
+                $newTokenKey->os = $os;
+                $newTokenKey->browser = $browser;
+                $newTokenKey->device = $device;
                 $token_key = Str::random(32);
-                $student->token_key = $token_key;
-                $student->save();
+                $newTokenKey->token_key = $token_key;
+                $newTokenKey->save();
                 
+                Session::put('student_token_id',  $newTokenKey->id);
                 Session::put('studentId', $student->id);
                 Session::put('studentName',  $studentName);
                 Session::put('studentPhoto',  $student->avator);
@@ -287,11 +302,13 @@ class StudentController extends Controller
 
     public function logout(Request $request)
     {
-        
         $studentId = Session::get('studentId');
-        $student = Student::where('id',$studentId)->first();
-        $student->token_key= '';
-        $student->save();
+        $token_id = Session::get('student_token_id');
+        $token = StudentLogInfo::where('id',$token_id)
+                    ->where('student_id',$studentId)->first();
+        $token->delete();
+
+        Session::forget('student_token_id');
         Session::forget('studentId');
         Session::forget('studentName');
         Session::forget('studentPhoto');
@@ -302,5 +319,16 @@ class StudentController extends Controller
     public function home()
     {
         return view('dashboard.student.home.student-dashboard');
+    }
+
+    public function s()
+    {
+       return Session::get('student_token_id');
+        Session::forget('studentId');
+        Session::forget('studentName');
+        Session::forget('studentPhoto');
+        Session::forget('student_token_key');
+ 
+    return $ipaddress;
     }
 }

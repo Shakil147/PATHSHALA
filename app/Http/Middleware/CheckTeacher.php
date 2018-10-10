@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Middleware;
-use App\Teacher;
-
-use Session;
 use Closure;
+use App\Teacher;
+use App\TeacherLogInfo;
+use Session;
 
 class CheckTeacher
 {
@@ -17,18 +17,30 @@ class CheckTeacher
      */
     public function handle($request, Closure $next)
     {
+        //return $next($request);
         $teacherId = Session::get('teacherId');
-        if ($teacherId) {
-            $token_key = Session::get('token_key');
-            if ($token_key) {
-                $teacher = Teacher::where('id',$teacherId)->first();
-                if ($token_key == $teacher->token_key) {
-                    return $next($request);
+        if (isset($teacherId)) {
+            $token_id = Session::get('teacher_token_id');
+            if (isset($token_id)) {
+                $token_key = Session::get('teacher_token_key');
+                if (isset($token_key)) {
+                    $teacher = Teacher::where('id',$teacherId)->first();
+                    if (isset($teacher)) {
+                        $token = TeacherLogInfo::where('id',$token_id)
+                        ->where('teacher_id',$teacherId)
+                        ->first();
+                        if (isset($token)) {
+                            if ($token->token_key == $token_key) {
+                                return $next($request);
+                            }
+                        }
+                    }
                 }
             }
-        }else{        
+        }
+        else{        
             return redirect('/');            
         }
-        
+
     }
 }

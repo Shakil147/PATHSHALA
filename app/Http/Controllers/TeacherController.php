@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Teacher;
 use App\TeacherContact;
 use App\TeacherAcademic;
+use App\TeacherLogInfo;
 use App\Mail\ConfermEmail;
 use Mail;
 use Image;
@@ -31,15 +32,30 @@ class TeacherController extends Controller
         if(isset($teacher)) {
             $cheak = password_verify($request->password, $teacher->password);
             if($cheak) {
+
                 $teacherName = $teacher->first_name.' '.$teacher->last_name;
+
+                //$ip = TeacherLogInfo::get_ip();
+                $ip = $_SERVER['REMOTE_ADDR'];
+                $os = TeacherLogInfo::get_os();
+                $browser = TeacherLogInfo::get_browser();
+                $device = TeacherLogInfo::get_device();
+
+                $newTokenKey = new TeacherLogInfo;
+                $newTokenKey->teacher_id = $teacher->id;
+                $newTokenKey->ip = $ip;
+                $newTokenKey->os = $os;
+                $newTokenKey->browser = $browser;
+                $newTokenKey->device = $device;
                 $token_key = Str::random(32);
-                $teacher->token_key = $token_key;
-                $teacher->save();
-                
+                $newTokenKey->token_key = $token_key;
+                $newTokenKey->save();
+
+                Session::put('teacher_token_id',  $newTokenKey->id);
                 Session::put('teacherId', $teacher->id);
                 Session::put('teacherName',  $teacherName);
                 Session::put('teacherPhoto',  $teacher->avator);
-                Session::put('token_key',  $token_key);
+                Session::put('teacher_token_key',  $token_key);
 
                 notify()->flash('Welcome back!'.$teacherName, 'success', [
                     'timer' => 5000,
@@ -313,27 +329,27 @@ class TeacherController extends Controller
     {
         return view('dashboard.teacher/report/marks-report');
     }
-    public function logout(Request $request)
-    {
+    public function logout(Request $request){
         $teacherId = Session::get('teacherId');
-        $teacher = Teacher::where('id',$teacherId)->first();
-        $teacher->token_key= '';
-        $teacher->save();
+        $token_id = Session::get('teacher_token_id');
+
+        $token = TeacherLogInfo::where('id',$token_id)
+                        ->where('teacher_id',$teacherId)->first();
+        $token->delete();
+        
+        Session::forget('teacher_token_id');
         Session::forget('teacherId');
         Session::forget('teacherName');
         Session::forget('teacherPhoto');
-        Session::forget('token_key');
+        Session::forget('teacher_token_key');
         return redirect('/');
     }
     public function s()
     {
-        $teacherId = Session::get('teacherId');
-        $token_key = Session::get('token_key');
-        $teacher = Teacher::find($teacherId)->first();
-       // return $teacher->token_key;
-        return $teacherId;
-        if ($token_key == $teacher->token_key) {
-            return $teacher;
-        }
+       //return Session::get('teacher_token_id');
+      //return Session::get('teacherId');
+      // return Session::get('teacherName');
+      // return Session::get('teacherPhoto');
+       return Session::get('teacher_token_key');
     }
 }
