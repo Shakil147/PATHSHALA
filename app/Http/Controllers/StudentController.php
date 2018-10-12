@@ -129,7 +129,7 @@ class StudentController extends Controller
         $newStudent->phone = $request->phone;
         $newStudent->email = $request->email;
         $newStudent->religion = $request->religion;
-        $newStudent->passeord = bcrypt('secret');
+        $newStudent->password = bcrypt('secret');
         $newStudent->avator = $imageUrl;
         $newStudent->registration = $registration->registration+1;
         $newStudent->label_id = $request->label_id;

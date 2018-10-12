@@ -49,8 +49,8 @@ ALL TEACHER
 									<td>{{ $teacher->phone }}</td>
 									<td>{{ $teacher->email }}</td>
 									<td class="action-link">
-										<a class="edit" href="#" title="Edit" data-toggle="modal" data-target="#editDetailModal"><i class="fa fa-edit"></i></a>
-										<a class="delete" href="#" title="Delete" data-toggle="modal" data-target="#deleteDetailModal"><i class="fa fa-remove"></i></a>
+										<a class="edit" href="#" title="Edit" data-toggle="modal" data-target="#editDetailModal{{ $teacher->id }}"><i class="fa fa-edit"></i></a>
+										<a class="delete" href="#" title="Delete" data-toggle="modal" data-target="#deleteDetailModal{{ $teacher->id }}"><i class="fa fa-remove"></i></a>
 									</td>
 								</tr>
 								@endforeach
@@ -65,7 +65,8 @@ ALL TEACHER
 
 
 <!-- Delete Modal -->
-<div id="deleteDetailModal" class="modal fade" role="dialog">
+@foreach($allTeacher as $teacher)
+<div id="deleteDetailModal{{ $teacher->id }}" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -83,10 +84,12 @@ ALL TEACHER
 		</div>
 	</div>
 </div>
+@endforeach
 
 
 <!--Edit details modal-->
-<div id="editDetailModal" class="modal fade" role="dialog">
+@foreach($allTeacher as $teacher)
+<div id="editDetailModal{{ $teacher->id }}" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -97,36 +100,36 @@ ALL TEACHER
 			<div class="modal-body dash-form">
 				<div class="col-sm-3">
 					<label class="clear-top-margin"><i class="fa fa-user"></i>FIRST NAME</label>
-					<input type="text" placeholder="First Name" value="John" />
-				</div>
-				<div class="col-sm-3">
-					<label class="clear-top-margin"><i class="fa fa-user"></i>MIDDLE NAME</label>
-					<input type="text" placeholder="Middle Name" value="Fidler" />
+					<input readonly required name=""value="{{ $teacher->first_name }}" type="text" placeholder="First Name" value="John" />
 				</div>
 				<div class="col-sm-3">
 					<label class="clear-top-margin"><i class="fa fa-user"></i>LAST NAME</label>
-					<input type="text" placeholder="Last Name" value="Doe" />
+					<input readonly required name="last_name" value="{{ $teacher->last_name }}" type="text" placeholder="Last Name" value="Doe" />
 				</div>
 				<div class="col-sm-3">
-					<label class="clear-top-margin"><i class="fa fa-book"></i>CLASS</label>
-					<input type="text" placeholder="Standard" value="5 STD" />
+					<label class="clear-top-margin"><i class="fa fa-book"></i>DEGREE</label>
+					<input readonly required name="degree" value="{{ $teacher->degree }}" type="text" placeholder="Standard" value="5 STD" />
+				</div>
+				<div class="col-sm-3">
+					<label><i class="fa fa-cogs"></i>UNIVERSITY</label>
+					<input readonly required name="university" value="{{ $teacher->university }}" type="text" placeholder="Section" value="PTH05A" />
 				</div>
 				<div class="clearfix"></div>
 				<div class="col-sm-3">
-					<label><i class="fa fa-cogs"></i>SECTION</label>
-					<input type="text" placeholder="Section" value="PTH05A" />
+					<label><i class="fa fa-puzzle-piece"></i>PASSING YEAR #</label>
+					<input readonly required name="passing_year" value="{{ $teacher->passing_year }}" type="text" placeholder="Roll Number" value="Fidler" />
 				</div>
 				<div class="col-sm-3">
 					<label><i class="fa fa-puzzle-piece"></i>ROLL #</label>
-					<input type="text" placeholder="Roll Number" value="Fidler" />
+					<input readonly required name="cgpa" value={{ $teacher->cgpa }}" type="text" placeholder="Roll Number" value="Fidler" />
 				</div>
 				<div class="col-sm-3">
 					<label><i class="fa fa-phone"></i>CONTACT #</label>
-					<input type="text" placeholder="Contact Number" value="1234567890" />
+					<input readonly required name="phone" value="{{ $teacher->phone }}" type="text" placeholder="Contact Number" value="1234567890" />
 				</div>
 				<div class="col-sm-3">
 					<label><i class="fa fa-envelope-o"></i>EMAIL</label>
-					<input type="text" placeholder="Email" value="john@gmail.com" />
+					<input readonly required name="email" value="{{ $teacher->email }}" type="text" placeholder="Email" value="john@gmail.com" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -139,4 +142,6 @@ ALL TEACHER
 		</div>
 	</div>
 </div>
+@endforeach
+
 @endsection

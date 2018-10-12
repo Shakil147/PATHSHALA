@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends Model
 {
-   public function academic()
+	public function contact()
     {
-        return $this->hasMany('App\TeacherAcademic');
+        return $this->hasOne(TeacherContact::class);
     }
+
+    public function academic()
+    {
+        return $this->hasMany(TeacherAcademic::class);
+    }
+
 }

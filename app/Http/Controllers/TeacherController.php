@@ -29,6 +29,8 @@ class TeacherController extends Controller
     public function login(Request $request)
     {
         $teacher = Teacher::where('email', $request->email)->first();
+        //$teacher = Teacher::where('email','neoma.murray@example.org')->first();
+        //return $teacher;
         if(isset($teacher)) {
             $cheak = password_verify($request->password, $teacher->password);
             if($cheak) {
@@ -93,11 +95,18 @@ class TeacherController extends Controller
     }
     public function teacherList()
     {   
-        $allTeacher= DB::table('teacher_academics')
+        /*$allTeacher= DB::table('teacher_academics')
         ->join('teachers', 'teacher_academics.teacher_id', '=', 'teachers.id')
         ->join('teacher_contacts', 'teacher_academics.teacher_id', '=', 'teacher_contacts.teacher_id')
         ->select('teacher_academics.*','teacher_contacts.*','teachers.first_name','teachers.last_name')
         ->where('highest_degree',1)
+        ->get();*/
+
+        $allTeacher= DB::table('teachers')
+        ->join('teacher_academics', 'teacher_academics.teacher_id', '=', 'teachers.id')
+        ->join('teacher_contacts', 'teachers.id', '=', 'teacher_contacts.teacher_id')
+        ->select('teachers.id','teachers.email','teachers.phone','teachers.first_name','teachers.last_name','teacher_academics.*')
+        ->where('teacher_academics.highest_degree',1)
         ->get();
         //return $allTeacher;
         return view('dashboard.admin.teacher.teacherList',['allTeacher'=>$allTeacher]);
@@ -190,6 +199,7 @@ class TeacherController extends Controller
         $teacherContact->districts_id =$request->zilla;
         $teacherContact->upzilla_id =$request->up_zilla;
         $teacherContact->zip =$request->zip;
+        
         $teacherContact->phone =$request->phone;
         $teacherContact->alt_phone =$request->alt_phone;
         $teacherContact->email =$request->email;
